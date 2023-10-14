@@ -1,6 +1,4 @@
 # Firewall Access Review Tool
-![FART](https://github.com/NoodleStorm/FART/assets/35268084/1c5a8701-8e3b-43c0-a4a1-366f762a3aed)
-
 ## What is it
 The FART is was created using 90% powershell and 9% KQL and 1% magic. Its a tool that connects to Azure, downloads and parses your NSG's, then searches the flow logs for a 'hit' on that NSG rule. This is done to assist the reviewer in identifing redundant rules.
 ## Why I created it
