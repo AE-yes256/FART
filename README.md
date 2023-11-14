@@ -4,11 +4,10 @@ The FART is was created using 90% powershell and 9% KQL and 1% magic. Its a tool
 ## Why I created it
 I created this to assist with PCI DSS Requirement 1.1.7 and because its good security practice.
 ## Roadmap Items
-- Make this into a cmdlett and let you target subs etc
-- Build in Fancy status bar
+~~ Make this into a cmdlett and let you target subs etc ~~ Complete
+~~ Build in Fancy status bar ~~ Complete
 - Highlight insecure ports / protocols
 - Highlight over permissive rules
-- cmdlettize it
 ## How to use it
 ### Pre Reqs
 #### Configure Flow Logs
