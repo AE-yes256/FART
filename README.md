@@ -1,14 +1,27 @@
 # Firewall Access Review Tool
 ## What is it
-The FART is was created using 90% powershell and 9% KQL and 1% magic. Its a tool that connects to Azure, downloads and parses your NSG's, then searches the flow logs for a 'hit' on that NSG rule. This is done to assist the reviewer in identifing redundant rules.
+The FART is was created using 90% powershell and 9% KQL and 1% magic. Its a tool that connects to Azure, downloads and parses your NSG's, then searches the flow logs for a 'hit' on that NSG rule. This is done to assist the reviewer in identifying redundant rules. 
 ## Why I created it
 I created this to assist with PCI DSS Requirement 1.1.7 and because its good security practice.
 ## Roadmap Items
-~~ Make this into a cmdlett and let you target subs etc ~~ Complete
-~~ Build in Fancy status bar ~~ Complete
-- Highlight insecure ports / protocols
-- Highlight over permissive rules
-## How to use it
+- [X] Make this into a cmdlett and let you target subs
+- [X] Build in Fancy status bar
+- [ ] Highlight insecure ports / protocols
+- [ ] Provide other flags to apply profiles to the report (PCI etc...) 
+- [ ] Highlight over permissive rules
+- [ ] Make Recomendations on rules that can be removed or reworked 
+- [ ] Check if user is already connected to Azure rather than always forcing authentication
+- [ ] Build in some error checking for user inputs 
+## How to run
+Select the Subscription
+```powershell
+PS C:\tmpp> Get-AzNSG-Review -SelectSub
+```
+OR
+All the Subscriptions
+```powershell
+PS C:\tmpp> Get-AzNSG-Review -All
+```
 ### Pre Reqs
 #### Configure Flow Logs
 No point reinventing the wheel...
