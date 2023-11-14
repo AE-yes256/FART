@@ -7,8 +7,8 @@ A function used to export all NSGs rules in all your Azure Subscriptions
 
 .Notes
 Created   : 02-September-2022
-Updated   : 02-September-2022
-Version   : 1
+Updated   : 14-November-2023
+Version   : 2
 Author    : Sam Greaves
 Disclaimer: This script is provided "AS IS" with no warranties.
 #>
