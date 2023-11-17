@@ -6,15 +6,15 @@ I created this to assist with PCI DSS Requirement 1.1.7 and because its good sec
 ## Roadmap Items
 - [X] Make this into a cmdlett and let you target subs
 - [X] Build in Fancy status bar
+- [X] Make Hit Count optional via flag
+- [X] Check if user is already connected to Azure rather than always forcing authentication
+- [X] Build in some error checking for user inputs 
 - [ ] Check if NSG's are present and alert if not
 - [ ] Check if Flow logs are enabled and alert if not
-- [ ] Make Hit Count optional via flag
 - [ ] Highlight insecure ports / protocols
 - [ ] Provide other flags to apply profiles to the report (PCI etc...) 
 - [ ] Highlight over permissive rules
 - [ ] Make Recomendations on rules that can be removed or reworked 
-- [ ] Check if user is already connected to Azure rather than always forcing authentication
-- [ ] Build in some error checking for user inputs 
 ## How to run
 Select the Subscription
 ```powershell
@@ -24,6 +24,11 @@ OR
 All the Subscriptions
 ```powershell
 PS C:\tmpp> Get-AzNSG-Review -All
+```
+AND
+Enable HitCount - HitCount is **disabled** by default.
+```powershell
+PS C:\tmpp> Get-AzNSG-Review -All -HitCount
 ```
 ### Pre Reqs
 #### Configure Flow Logs
