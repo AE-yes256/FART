@@ -12,21 +12,26 @@ Version   : 2
 Author    : Sam Greaves
 Disclaimer: This script is provided "AS IS" with no warranties.
 #>
-Function Get-AzNSG-Review {
+Function Get-AzNSGReview {
     [cmdletbinding()]
     Param (
-        [switch]$All, [switch]$SelectSub, [string]$Output
+        [switch]$All, 
+        [switch]$SelectSub, 
+        [switch]$HitCount,  # Add this line
+        [string]$Output
     )
     # End of Parameters
 
     Process {
-        Connect-AzAccount -TenantId ##YourTenantID
-        $sub = "###################" ##Your Sub for LAWS
+        if (-not (Get-AzContext)) {
+            Connect-AzAccount -TenantId XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        }
+        $sub = "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
         Set-AzContext -Subscription $sub | Out-Null
         $outputarray = @()
 
-        $workspaceName = "###################" ## LAWS Name
-        $workspaceRG = "###################" ## LAWS RG
+        $workspaceName = "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+        $workspaceRG = "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
         $WorkspaceID = (Get-AzOperationalInsightsWorkspace -Name $workspaceName -ResourceGroupName $workspaceRG).CustomerID
 
         function get-hitcount ($rule, $nsName) {
@@ -38,8 +43,7 @@ Function Get-AzNSG-Review {
     | summarize count()
     "
             $kqlQuery = Invoke-AzOperationalInsightsQuery -WorkspaceId $WorkspaceID -Query $query
-            $kqlQuery.Results
-    
+            $kqlQuery.Results | Select-Object -ExpandProperty count_
 
         }
 
@@ -73,7 +77,7 @@ Function Get-AzNSG-Review {
                             'Destination'            = $rule.DestinationAddressPrefix | Out-String
                             'Destination Port Range' = $rule.DestinationPortRange | Out-String
                             'Resource Group Name'    = $azNsg.ResourceGroupName | Out-String
-                            'Hit Count'              = get-hitcount $rule.Name $azNsg.Name
+                            'Hit Count'              = if ($HitCount) { get-hitcount $rule.Name $azNsg.Name } else { $null }
                             'Attached Subnet(s)'     = $attachedSubnets | Out-String
                             'Attached nic(s)'        = $attachedNics | Out-String
 
@@ -97,7 +101,7 @@ Function Get-AzNSG-Review {
                             'Destination'            = $rule.DestinationAddressPrefix | Out-String
                             'Destination Port Range' = $rule.DestinationPortRange | Out-String
                             'Resource Group Name'    = $azNsg.ResourceGroupName | Out-String
-                            'Hit Count'              = get-hitcount $rule.Name $azNsg.Name
+                            'Hit Count'              = if ($HitCount) { get-hitcount $rule.Name $azNsg.Name } else { $null }
                             'Attached Subnet(s)'     = $attachedSubnets | Out-String
                             'Attached nic(s)'        = $attachedNics | Out-String
                         }
@@ -112,7 +116,13 @@ Function Get-AzNSG-Review {
             Clear-Host "-SelectSub selected to export a particular sub's NSG's to. Please make a selection from the below list of subs..."
             Write-Output ($azSubs | Format-Table | Out-String)
             $sub = Read-Host "Please enter Target Sub ID"
+            # Validate the input to ensure it's a valid subscription ID
+            while (-not ($azSubs.SubscriptionId -contains $sub)) {
+                Write-Warning "Invalid subscription ID. Please enter a valid Subscription ID."
+                $sub = Read-Host "Please enter Target Sub ID"
+            }
             Write-Output "$sub, selected"
+            Set-AzContext -Subscription $sub | Out-Null
             Set-AzContext -Subscription $sub | Out-Null
             $Subactual = Get-AzSubscription -SubscriptionId $sub
             $azSubName = $Subactual.Name
@@ -138,7 +148,7 @@ Function Get-AzNSG-Review {
                         'Destination'            = $rule.DestinationAddressPrefix | Out-String
                         'Destination Port Range' = $rule.DestinationPortRange | Out-String
                         'Resource Group Name'    = $azNsg.ResourceGroupName | Out-String
-                        'Hit Count'              = get-hitcount $rule.Name $azNsg.Name
+                        'Hit Count'              = if ($HitCount) { get-hitcount $rule.Name $azNsg.Name } else { $null }
                         'Attached Subnet(s)'     = $attachedSubnets | Out-String
                         'Attached nic(s)'        = $attachedNics | Out-String
                 
@@ -163,7 +173,7 @@ Function Get-AzNSG-Review {
                         'Destination'            = $rule.DestinationAddressPrefix | Out-String
                         'Destination Port Range' = $rule.DestinationPortRange | Out-String
                         'Resource Group Name'    = $azNsg.ResourceGroupName | Out-String
-                        'Hit Count'              = get-hitcount $rule.Name $azNsg.Name
+                        'Hit Count'              = if ($HitCount) { get-hitcount $rule.Name $azNsg.Name } else { $null }
                         'Attached Subnet(s)'     = $attachedSubnets | Out-String
                         'Attached nic(s)'        = $attachedNics | Out-String
                     }
