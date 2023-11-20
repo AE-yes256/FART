@@ -8,8 +8,9 @@ I created this to assist with PCI DSS Requirement 1.1.7 and because its good sec
 - [X] Build in Fancy status bar
 - [X] Make Hit Count optional via flag
 - [X] Check if user is already connected to Azure rather than always forcing authentication
-- [X] Build in some error checking for user inputs 
+- [X] Build in some error checking for user inputs
 - [ ] Check if NSG's are present and alert if not
+- [ ] Allow user to specify Flow log Details in cmdlet
 - [ ] Check if Flow logs are enabled and alert if not
 - [ ] Highlight insecure ports / protocols
 - [ ] Provide other flags to apply profiles to the report (PCI etc...) 
