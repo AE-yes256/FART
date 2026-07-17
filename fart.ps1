@@ -50,8 +50,8 @@ function Get-AzNSGReview {
 
         # Log Analytics workspace receiving NSG rule-counter diagnostics
         [string]$WorkspaceName,
-        [string]$WorkspaceResourceGroup =,
-        [string]$WorkspaceSubscriptionId = 'XXXXXXX',
+        [string]$WorkspaceResourceGroup,
+        [string]$WorkspaceSubscriptionId = 'EXAMPLE **** Insert',
 
         [ValidateRange(1, 90)]
         [int]$HitCountDays = 15,
